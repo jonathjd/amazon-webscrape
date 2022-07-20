@@ -11,7 +11,7 @@ headers={
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"}
 
 # get the page content and parse
-def getData(url, headers):
+def getSoup(url, headers):
     r = requests.get(url=URL, headers=headers)
     soup = BeautifulSoup(r.content, 'html.parser')
     return soup
@@ -19,15 +19,20 @@ def getData(url, headers):
 # get title of all the coffee on the page
 def getTitle(soup):
     #names = []
-    coffee = soup.find('h2', class_="a-size-mini")
-    print(coffee)
+    coffeeName= soup.find('span', class_="a-size-base-plus").get_text()
+    return coffeeName
 
 # find corresponding price for all coffee
 def findPrice(soup):
-    price = soup.find('span', class_="a-price-whole").get_text()
-    print(price)
+    coffeePrice = soup.find('span', class_="a-price-whole").get_text()
+    return coffeePrice
 
 
-soup = getData(URL, headers)
-getTitle(soup)
-findPrice(soup)
+def main():
+    soup = getSoup(URL, headers)
+    coffeeName = getTitle(soup)
+    coffeePrice = findPrice(soup)
+    print(coffeeName, coffeePrice)
+
+if __name__ =='__main__':
+    main()
