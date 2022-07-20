@@ -28,8 +28,10 @@ def getData(soup):
     return coffeePrice
 
 def main():
-    soup= getSoup(URL, headers)
-    getNextPage(soup)
+    soup = getSoup(URL, headers)
+    newURL = getNextPage(soup)
+    soup = getSoup(newURL, headers)
+    print(newURL)
 
 if __name__ =='__main__':
     main()
