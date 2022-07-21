@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 
 # Grab website URL
-URL = 'https://www.amazon.com/s?k=ground+coffee&crid=1VYJIVSJBDG9E&qid=1658426638&sprefix=ground+coffee%2Caps%2C178&ref=sr_pg_1'
+URL = 'https://www.amazon.com/s?k=ground+coffee&page=1&crid=1VYJIVSJBDG9E&qid=1658430622&sprefix=ground+coffee%2Caps%2C178&ref=sr_pg_1'
 headers={
     'Host': 'www.amazon.com',
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"}
@@ -15,14 +15,16 @@ def getSoup(url, headers):
     r = requests.get(url=URL, headers=headers)
     return BeautifulSoup(r.text, 'html.parser')
 
-
 def getName(soup):
     # get data of all the coffee on the page
     results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
 
     coffeeName=[]
     for item in results:
-        name = item.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'}).get_text()
+        try:
+            name = item.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'}).get_text()
+        except:
+            name = "Name Unavailable"
         coffeeName.append(name)
     return coffeeName
 
@@ -50,7 +52,6 @@ def getNumRating(soup):
         num_ratings.append(item_rating)
     return num_ratings
 
-
 def getAvgRating(soup):
     results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
 
@@ -76,13 +77,28 @@ def getProductSize(soup):
     return product_size
 
 def main():
-    soup = getSoup(URL, headers)
-    coffee_name = getName(soup)
-    coffee_price = getPrice(soup)
-    coffee_rating = getNumRating(soup)
-    avg_ratings = getAvgRating(soup)
-    print(getProductSize(soup))
 
+    page = 1
+    while page != 8:
+        URL = f'https://www.amazon.com/s?k=ground+coffee&page={page}&crid=1VYJIVSJBDG9E&qid=1658430602&sprefix=ground+coffee%2Caps%2C178&ref=sr_pg_{page}'
+        soup = getSoup(URL, headers)
+
+        if page == 1:
+            coffee_name = getName(soup)
+            coffee_price = getPrice(soup)
+            coffee_rating = getNumRating(soup)
+            coffee_avg_ratings = getAvgRating(soup)
+            coffee_product_size = getProductSize(soup)
+        else:
+            coffee_name += getName(soup)
+            coffee_price += getPrice(soup)
+            coffee_rating += getNumRating(soup)
+            coffee_avg_ratings += getAvgRating(soup)
+            coffee_product_size += getProductSize(soup)
+        
+        page+=1
+
+    print(len(coffee_name))
     return
 
 
