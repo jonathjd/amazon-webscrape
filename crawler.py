@@ -31,7 +31,10 @@ def getPrice(soup):
 
     price=[]
     for item in results:
-        item_price = item.find('span', {'class': "a-offscreen"}).get_text()
+        try:
+            item_price = item.find('span', {'class': "a-offscreen"}).get_text()
+        except:
+            item_price = "Price Unavailable"
         price.append(item_price)
     return price
 
@@ -53,8 +56,9 @@ def getAvgRating(soup):
 
 def main():
     soup = getSoup(URL, headers)
-    coffeeName = getName(soup)
-    print(getPrice(soup))
+    coffee_name = getName(soup)
+    coffee_price = getPrice(soup)
+    
     return
 
 
