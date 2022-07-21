@@ -112,7 +112,19 @@ def main():
         
         page+=1 # increment page number
 
-    # create dictonary from
+    coffee_list = [
+        coffee_name, 
+        coffee_price, 
+        coffee_rating, 
+        coffee_avg_ratings,
+        coffee_product_size,
+        coffee_link
+        ]
+    
+    # create dictonary from lists
+    coffee_data = {a[0]: list(a[1:]) for a in zip(*coffee_list)}
+
+    print(coffee_data)
     return
 
 
