@@ -59,17 +59,6 @@ def getAvgRating(soup):
         #     'avg_rating': item.find('span', {'class': 'a-icon-alt'})
         # }
 
-
-
-
-
-
-
-
-def getPrice(soup):
-    #coffeePrice = soup.find_all('span', class_="a-price-whole")
-    pass
-
 def main():
     return
 
