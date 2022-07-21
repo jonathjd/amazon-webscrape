@@ -13,25 +13,67 @@ headers={
 # get the page content
 def getSoup(url, headers):
     r = requests.get(url=URL, headers=headers)
-    soup = BeautifulSoup(r.content, 'html.parser')
+    soup = BeautifulSoup(r.text, 'html.parser')
     return soup
 
-def getNextPage(soup):
-    for link in soup.find_all('a', class_="s-pagination-next"):
-        newURL = 'https://www.amazon.com' + link.get('href')
-        return newURL
+# def getNextPage(soup):
+#     url_list = []
+#     for i in range(1,8):
+#         link = soup.find_all('a')
+#         newURL = 'https://www.amazon.com' + link.get('href')
+#         url_list.append(newURL)
+#     return url_list
 
-def getData(soup):
-    # get title & price of all the coffee on the page
-    coffeeName= soup.find('span', class_="a-size-base-plus").get_text()    
-    coffeePrice = soup.find('span', class_="a-price-whole").get_text()
-    return coffeePrice
+
+
+
+def getName(soup):
+    # get data of all the coffee on the page
+    results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
+
+    coffeeName=[]
+    for item in results:
+        name = item.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'}).get_text()
+        coffeeName.append(name)
+    return coffeeName
+
+def getPrice(soup):
+    whole_price=[]
+    # w_price = item.find('span', {'class': 'a-offscreen'}).text
+    # whole_price.append(w_price)
+    pass
+
+def getNumRating(soup):
+    num_ratings=[]
+    pass
+
+def getAvgRating(soup):
+    avg_rating=[]
+    pass
+
+        # productData = {
+        #     'name': item.find('span', {'class': 'a-size-base-plus a-color-base a-text-normal'}),
+        #     'price_whole': item.find('span', {'class': 'a-price-whole'}),
+        #     'price_fraction': item.find('span', {'class': 'a-price-fraction'}),
+        #     'number_of_ratings': item.find('span', {'class': 'a-size-base s-underline-text'}),
+        #     'avg_rating': item.find('span', {'class': 'a-icon-alt'})
+        # }
+
+
+
+
+
+
+
+
+def getPrice(soup):
+    #coffeePrice = soup.find_all('span', class_="a-price-whole")
+    pass
 
 def main():
-    soup = getSoup(URL, headers)
-    newURL = getNextPage(soup)
-    soup = getSoup(newURL, headers)
-    print(newURL)
+    return
+
+
 
 if __name__ =='__main__':
     main()
