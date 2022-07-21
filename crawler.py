@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 
 # Grab website URL
-URL = 'https://www.amazon.com/s?k=coffee'
+URL = 'https://www.amazon.com/s?k=ground+coffee&crid=1VYJIVSJBDG9E&qid=1658426638&sprefix=ground+coffee%2Caps%2C178&ref=sr_pg_1'
 headers={
     'Host': 'www.amazon.com',
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"}
@@ -13,18 +13,7 @@ headers={
 # get the page content
 def getSoup(url, headers):
     r = requests.get(url=URL, headers=headers)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    return soup
-
-# def getNextPage(soup):
-#     url_list = []
-#     for i in range(1,8):
-#         link = soup.find_all('a')
-#         newURL = 'https://www.amazon.com' + link.get('href')
-#         url_list.append(newURL)
-#     return url_list
-
-
+    return BeautifulSoup(r.text, 'html.parser')
 
 
 def getName(soup):
@@ -38,10 +27,13 @@ def getName(soup):
     return coffeeName
 
 def getPrice(soup):
-    whole_price=[]
-    # w_price = item.find('span', {'class': 'a-offscreen'}).text
-    # whole_price.append(w_price)
-    pass
+    results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
+
+    price=[]
+    for item in results:
+        item_price = item.find('span', {'class': "a-offscreen"}).get_text()
+        price.append(item_price)
+    return price
 
 def getNumRating(soup):
     num_ratings=[]
@@ -60,6 +52,9 @@ def getAvgRating(soup):
         # }
 
 def main():
+    soup = getSoup(URL, headers)
+    coffeeName = getName(soup)
+    print(getPrice(soup))
     return
 
 
