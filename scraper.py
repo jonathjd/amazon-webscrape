@@ -73,6 +73,19 @@ def getProductSize(soup): # get the size of each coffee product on page
         product_size.append(size)
     return product_size
 
+def getLink(soup):
+    results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
+    product_link = []
+
+    for item in results:
+        try:
+            link = item.find('a').get('href')
+            link = 'https://www.amazon.com' + link
+        except:
+            link = "Link Unavailable"
+        product_link.append(link)
+    return product_link
+
 def main():
     # declare page number for while loop
     page = 1
@@ -88,12 +101,14 @@ def main():
             coffee_rating = getNumRating(soup)
             coffee_avg_ratings = getAvgRating(soup)
             coffee_product_size = getProductSize(soup)
+            coffee_link = getLink(soup)
         else:
             coffee_name += getName(soup)
             coffee_price += getPrice(soup)
             coffee_rating += getNumRating(soup)
             coffee_avg_ratings += getAvgRating(soup)
             coffee_product_size += getProductSize(soup)
+            coffee_link += getLink(soup)
         
         page+=1 # increment page number
 
