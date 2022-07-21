@@ -52,15 +52,37 @@ def getNumRating(soup):
 
 
 def getAvgRating(soup):
-    avg_rating=[]
-    pass
+    results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
+
+    avg_ratings=[]
+    for item in results:
+        try:
+            avg_rating = item.find('span', {'class': "a-icon-alt"}).get_text()
+        except:
+            avg_rating = "Rating Unavailable"
+        avg_ratings.append(avg_rating)
+    return avg_ratings
+
+def getProductSize(soup):
+    results = soup.find_all('div', {'class': "a-section a-spacing-small s-padding-left-small s-padding-right-small"})
+
+    product_size=[]
+    for item in results:
+        try:
+            size = item.find('span', {'class': "a-color-information a-text-bold"}).get_text()
+        except:
+            size = "Size Unavailable"
+        product_size.append(size)
+    return product_size
 
 def main():
     soup = getSoup(URL, headers)
     coffee_name = getName(soup)
     coffee_price = getPrice(soup)
     coffee_rating = getNumRating(soup)
-    
+    avg_ratings = getAvgRating(soup)
+    print(getProductSize(soup))
+
     return
 
 
