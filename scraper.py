@@ -3,6 +3,7 @@ from inspect import getcomments
 from tkinter.font import names
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
 
 URL = 'https://www.amazon.com/s?k=ground+coffee&page=1&crid=1VYJIVSJBDG9E&qid=1658430622&sprefix=ground+coffee%2Caps%2C178&ref=sr_pg_1'
 headers={
@@ -96,6 +97,8 @@ def main():
             coffee_product_size += getProductSize(soup)
         
         page+=1 # increment page number
+
+    # Save these lists to a pandas d
     return
 
 
